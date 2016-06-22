@@ -8,6 +8,7 @@ class datamuse_request_object():
     status_code = "not connected"
 
     def __init__(self, query : str, search : str, code=None):
+        #TODO: accomodate all options
         self.apicall = "/words?{}={}".format(query, search)
 
     def connect(self):
