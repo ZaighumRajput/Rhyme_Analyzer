@@ -16,16 +16,22 @@ class datamuse_request_object():
 
 
 
+@pytest.fixture(scope='session')
+def request_obj():
+    request_obj = datamuse_request_object("sl", "biggie")
+    return request_obj
+
+def test_apicall(request_obj):
+    assert request_obj.apicall == "/words?sl=biggie"
+
+def test_connection(request_obj):
+    request_obj.connect()
+    assert request_obj.status_code == 200
+
+def test_response(request_obj):
+    assert request_obj.response == None
+
 class Test_Datamust_request_object:
-
-    def test_apicall_string(cls):
-        first = datamuse_request_object("sl", "biggie")
-        assert first.apicall ==  "/words?sl=biggie"
-
-    def test_connection(cls):
-        first = datamuse_request_object("sl", "biggie")
-        first.connect()
-        assert first.status_code == 200
 
     def test_response(cls):
         first = datamuse_request_object("sl", "biggie")
