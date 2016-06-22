@@ -13,7 +13,7 @@ class datamuse_request_object():
     def connect(self):
         r = requests.get(self.apihook + self.apicall)
         self.status_code = r.status_code
-
+        self.response = r.json()
 
 
 @pytest.fixture(scope='session')
@@ -30,9 +30,3 @@ def test_connection(request_obj):
 
 def test_response(request_obj):
     assert request_obj.response == None
-
-class Test_Datamust_request_object:
-
-    def test_response(cls):
-        first = datamuse_request_object("sl", "biggie")
-
