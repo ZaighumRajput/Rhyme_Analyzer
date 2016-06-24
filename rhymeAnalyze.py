@@ -1,6 +1,6 @@
 import requests
 import pytest
-
+import json
 
 class datamuse_request_object():
     response = []
@@ -17,10 +17,10 @@ class datamuse_request_object():
         self.response = r.json()
 
 
-@pytest.fixture(scope='session')
-def request_obj():
-    request_obj = datamuse_request_object("sl", "biggie")
-    return request_obj
+def get_rhyme(word : str, top=7):
+    rhyme_request = datamuse_request_object("sl", word)
+    rhyme_request.connect()
+    return ", ".join([ jsonword.get("word") for jsonword in rhyme_request.response[0:top]])
 
 def test_apicall(request_obj):
     assert request_obj.apicall == "/words?sl=biggie"
@@ -31,3 +31,7 @@ def test_connection(request_obj):
 
 def test_response(request_obj):
     assert request_obj.response == None
+
+
+def test_get_rhyme():
+    assert get_rhyme("word") == 'word,ward,weird,wert,whirled,wired,wirt'

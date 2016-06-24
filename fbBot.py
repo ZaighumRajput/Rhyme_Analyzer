@@ -1,6 +1,8 @@
 from flask import Flask, request
+from rhymeAnalyze import get_rhyme
 import requests
 import json
+
 
 app = Flask(__name__)
 
@@ -46,7 +48,7 @@ def handle_incoming_messages():
                     recipient_id = messaging_event["recipient"]["id"]
                     message_text = messaging_event["message"]["text"]
 
-                    reply(sender_id, "yo son")
+                    reply(sender_id, get_rhyme(message_text, 15))
 
     return "ok"
 
