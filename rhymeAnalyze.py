@@ -7,7 +7,7 @@ class datamuse_request_object():
     apihook = "https://api.datamuse.com/"
     status_code = "not connected"
 
-    def __init__(self, query : str, search : str, code=None):
+    def __init__(self, query : str, search : str):
         #TODO: accomodate all options
         self.apicall = "/words?{}={}".format(query, search)
 
@@ -18,9 +18,14 @@ class datamuse_request_object():
 
 
 def get_rhyme(word : str, top=7):
-    rhyme_request = datamuse_request_object("sl", word)
+    rhyme_request = datamuse_request_object("rel_rhy", word)
     rhyme_request.connect()
     return ", ".join([ jsonword.get("word") for jsonword in rhyme_request.response[0:top]])
+
+@pytest.fixture(scope='session')
+def request_obj():
+        request_obj = datamuse_request_object("sl", "biggie")
+        return request_obj
 
 def test_apicall(request_obj):
     assert request_obj.apicall == "/words?sl=biggie"
@@ -34,4 +39,4 @@ def test_response(request_obj):
 
 
 def test_get_rhyme():
-    assert get_rhyme("word") == 'word,ward,weird,wert,whirled,wired,wirt'
+    assert get_rhyme("word") == 'bluebird, bird, absurd, incurred, nerd, deterred, herd'
