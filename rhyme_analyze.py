@@ -2,13 +2,13 @@ import requests
 import pytest
 import json
 
-class datamuse_request_object():
+class DatamuseRequestObject():
     response = []
     apihook = "https://api.datamuse.com/"
     status_code = "not connected"
 
     def __init__(self, query : str, search : str):
-        #TODO: accomodate all options
+        #TODO: extend query string
         self.apicall = "/words?{}={}".format(query, search)
 
     def connect(self):
@@ -18,13 +18,13 @@ class datamuse_request_object():
 
 
 def get_rhyme(word : str, top=7):
-    rhyme_request = datamuse_request_object("rel_rhy", word)
+    rhyme_request = DatamuseRequestObject("rel_rhy", word)
     rhyme_request.connect()
     return ", ".join([ jsonword.get("word") for jsonword in rhyme_request.response[0:top]])
 
 @pytest.fixture(scope='session')
 def request_obj():
-        request_obj = datamuse_request_object("sl", "biggie")
+        request_obj = DatamuseRequestObject("sl", "biggie")
         return request_obj
 
 def test_apicall(request_obj):
